@@ -1,0 +1,22 @@
+ name: Get OIDC Token
+     on: workflow_dispatch
+     permissions:
+       id-token: write # Required for requesting the JWT
+       contents: read
+  
+     jobs:
+       print-token:
+         runs-on: ubuntu-latest
+        steps:
+          - name: Install OIDC Client
+            uses: actions/setup-node@v3
+            with:
+              node-version: 16
+   
+          - name: Get ID Token
+           uses: actions/github-script@v6
+             with:
+              script: |
+                const token = await core.getIDToken('https://api.doppler.com')
+               console.log("::warning::YOUR OIDC TOKEN BELOW")
+                console.log(token)
